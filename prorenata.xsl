@@ -6,6 +6,7 @@
 	<!-- v. 1.0 = Skriptet upprättat
 		 v. 1.1 = Skriptet tar med xml-filen vid inläsning
 		 v. 1.2 = Fixat så att national_identity_number läggs till för att möjliggöra sökning i Mitt arkiv 
+		 v. 1.3 = Lagt till information om instrumentsekretess för vissa bilagor i psykologjournal
 	-->
 	
 	<!-- Scriptet letar efter filer i adapterns utpekade documentLocation  -->
@@ -125,6 +126,12 @@
 						<Attribute name="secrecy">
 							<Value>10</Value>
 						</Attribute>
+						
+						
+						<!-- Sekretess info -->
+						<Attribute name="sekretess_lagrum">
+							<Value>OBS! Kan finnas instrumentsekretess enligt OSL 17:4 bland psykologhandlingarna. Materialet får inte lämnas ut till andra än behöriga testanvändare.</Value>
+						</Attribute>
 
 						<!-- PUL -->
 						<Attribute name="pul_personal_secrecy">
@@ -147,6 +154,8 @@
 							<!-- Sekretess -->
 							<Attribute name="secrecy"><Value>10</Value>
 							</Attribute>
+						
+							
 
 							<!-- PUL -->
 							<Attribute name="pul_personal_secrecy"><Value>20</Value>
@@ -376,6 +385,13 @@
 							<!-- Sekretess -->
 							<Attribute name="secrecy"><Value>10</Value>
 							</Attribute>
+							
+							<!-- Sekretess info -->
+						<Attribute name="sekretess_lagrum">
+							<Value>OBS! Kan finnas instrumentsekretess enligt OSL 17:4 bland psykologhandlingarna. Materialet får inte lämnas ut till andra än behöriga testanvändare.</Value>
+						
+						</Attribute>
+
 
 							<!-- PUL -->
 							<Attribute name="pul_personal_secrecy"><Value>20</Value>
@@ -396,7 +412,8 @@
 								<!-- Sekretess -->
 								<Attribute name="secrecy"><Value>10</Value>
 								</Attribute>
-
+								
+								
 								<!-- PUL -->
 								<Attribute name="pul_personal_secrecy"><Value>20</Value>
 								</Attribute>
