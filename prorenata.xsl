@@ -7,6 +7,7 @@
 		 v. 1.1 = Skriptet tar med xml-filen vid inläsning
 		 v. 1.2 = Fixat så att national_identity_number läggs till för att möjliggöra sökning i Mitt arkiv 
 		 v. 1.3 = Lagt till information om instrumentsekretess för vissa bilagor i psykologjournal
+		 v. 1.4 = Skriptet tar med elevfoton vid inläsning.
 	-->
 	
 	<!-- Scriptet letar efter filer i adapterns utpekade documentLocation  -->
@@ -1522,6 +1523,82 @@
 
 </xsl:for-each>						
 </Document>
+</xsl:if>
+
+<xsl:if test="ns0:objects/ns0:patient_images/node()">
+<xsl:text>HEJ!!</xsl:text>
+<Document>
+							<DisplayName><xsl:text>Elevfoton</xsl:text></DisplayName>
+
+							<ObjectType>prnelev_handling</ObjectType>
+
+							<!-- Sekretess -->
+							<Attribute name="secrecy"><Value>10</Value>
+							</Attribute>
+
+							<!-- PUL -->
+							<Attribute name="pul_personal_secrecy"><Value>20</Value>
+							</Attribute>
+
+							<!-- Övrigt skydd -->
+							<Attribute name="other_secrecy"><Value>20</Value>
+							</Attribute>
+
+	<xsl:for-each select="ns0:objects/ns0:patient_images/ns0:patientimage">
+	<File>
+								<DisplayName><xsl:number value="position()" format="1"/><xsl:text> - </xsl:text><xsl:value-of select="ns0:archive_path"/></DisplayName>
+								<Content>
+
+									<URI><xsl:value-of select="$documentLocation"/>/<xsl:value-of select="fn:encode-for-uri($filename)"/>/<xsl:value-of select="fn:encode-for-uri(ns0:archive_path)"/></URI>
+
+								</Content>
+
+								<!-- Sekretess -->
+								<Attribute name="secrecy"><Value>10</Value>
+								</Attribute>
+
+								<!-- PUL -->
+								<Attribute name="pul_personal_secrecy"><Value>20</Value>
+								</Attribute>
+
+								<!-- Övrigt skydd -->
+								<Attribute name="other_secrecy"><Value>20</Value>
+								</Attribute>
+
+							</File>
+							<File>
+							<DisplayName><xsl:number value="position()" format="1"/><xsl:text>b - </xsl:text><xsl:value-of select="ns0:archive_pdfa_path"/></DisplayName>
+								<Content>
+
+									<URI><xsl:value-of select="$documentLocation"/>/<xsl:value-of select="fn:encode-for-uri($filename)"/>/<xsl:value-of select="fn:encode-for-uri(ns0:archive_pdfa_path)"/></URI>
+
+								</Content>
+
+								<!-- Sekretess -->
+								<Attribute name="secrecy"><Value>10</Value>
+								</Attribute>
+
+								<!-- PUL -->
+								<Attribute name="pul_personal_secrecy"><Value>20</Value>
+								</Attribute>
+
+								<!-- Övrigt skydd -->
+								<Attribute name="other_secrecy"><Value>20</Value>
+								</Attribute>
+
+							
+							
+							</File>
+	
+	
+	
+	
+	
+	</xsl:for-each>
+
+
+</Document>
+
 </xsl:if>
 
 
