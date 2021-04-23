@@ -2,7 +2,11 @@
 <xsl:stylesheet version="2.0" xmlns:fgs="eARDERMS" xmlns:ii="http://www.idainfront.se/xslt" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:fn="http://www.w3.org/2005/xpath-functions"  exclude-result-prefixes="xs fn fgs">
 	
 	<xsl:output indent="yes" media-type="text/xml" encoding="ISO-8859-1"/>
-
+		
+		<!-- 
+		v. 1.0 = Skriptet upprättat
+		v. 1.1 = Tagit bort choose på "riktning" då nya e-arkivkonfigurationen nu tar alla värden som systemet genererar.
+		-->
 	
 	
 	<xsl:param name="documentLocation"/>
@@ -226,21 +230,10 @@
 		
 		</xsl:choose>
 		
-		<!-- SKA VARA UT; IN OCH UPPRÄTTAD -->
+		
+		
 		<Attribute name="riktning">
-				<Value>
-				<xsl:choose>
-				
-					<xsl:when test="normalize-space(fgs:StatusHandling)='Expedierad'"><xsl:text>UT</xsl:text></xsl:when>
-					<xsl:when test="normalize-space(fgs:StatusHandling)='Inkommen'"><xsl:text>IN</xsl:text></xsl:when>
-					<xsl:when test="normalize-space(fgs:StatusHandling)='Upprättad'"><xsl:text>UPPRÄTTAD</xsl:text></xsl:when>
-					<xsl:when test="normalize-space(fgs:StatusHandling)='Under arbete'"><xsl:text>UPPRÄTTAD</xsl:text></xsl:when>	<!--TA BORT-->
-					<xsl:otherwise>FELAKTIGT VÄRDE!</xsl:otherwise>
-				
-				</xsl:choose>
-				</Value>
-				
-				
+				<Value><xsl:value-of select="normalize-space(fgs:StatusHandling)"/></Value>				
 		</Attribute>
 		
 		<Attribute name="registrerat_datum">
