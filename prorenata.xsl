@@ -8,6 +8,7 @@
 		 v. 1.2 = Fixat så att national_identity_number läggs till för att möjliggöra sökning i Mitt arkiv 
 		 v. 1.3 = Lagt till information om instrumentsekretess för vissa bilagor i psykologjournal
 		 v. 1.4 = Skriptet tar med elevfoton vid inläsning.
+		 v. 1.5 = Lagt till translate för att hantera strängar som innehåller éèáàü etc.
 	-->
 	
 	<!-- Scriptet letar efter filer i adapterns utpekade documentLocation  -->
@@ -34,7 +35,8 @@
 <!-- Skapar variabel som hämtar filnamnet på xml-filen och tar bort filändelsen för att skapa uri till den personliga mappen där filerna finns-->
 <xsl:variable name="filename"><xsl:value-of select="$pnr"/></xsl:variable>
 
-<xsl:variable name="xmlfil"><xsl:value-of select="$pnr"/><xsl:text> </xsl:text><xsl:value-of select="fn:lower-case(fn:translate($fornamn,' åäöÅÄÖ','-aaoaao'))"/><xsl:text>-</xsl:text><xsl:value-of select="fn:lower-case(fn:translate($efternamn,' åäöÅÄÖ','-aaoaao'))"/><xsl:text>, </xsl:text><xsl:value-of select="fn:lower-case(fn:translate($skola,' åäöÅÄÖ','-aaoaao'))"/>.xml</xsl:variable>
+<!--Skapar variabel som genererar namnet på elevens xml-fil -->
+<xsl:variable name="xmlfil"><xsl:value-of select="$pnr"/><xsl:text> </xsl:text><xsl:value-of select="fn:lower-case(fn:translate($fornamn,' åäöÅÄÖéèáàüêë','-aaoaaoeeaauee'))"/><xsl:text>-</xsl:text><xsl:value-of select="fn:lower-case(fn:translate($efternamn,' åäöÅÄÖéèáàüêë','-aaoaaoeeaauee'))"/><xsl:text>, </xsl:text><xsl:value-of select="fn:lower-case(fn:translate($skola,' åäöÅÄÖ','-aaoaao'))"/>.xml</xsl:variable>
 
 			
 <!-- Skapa en kopia av hela xml-filen och ger den ett filnamn baserat på personal_id -->
@@ -1526,7 +1528,6 @@
 </xsl:if>
 
 <xsl:if test="ns0:objects/ns0:patient_images/node()">
-<xsl:text>HEJ!!</xsl:text>
 <Document>
 							<DisplayName><xsl:text>Elevfoton</xsl:text></DisplayName>
 
