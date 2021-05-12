@@ -120,8 +120,24 @@ background-color:white;
 
 <xsl:for-each select="ca:Utredning_2">
 <h3>Utredning</h3>
+
+<table>
+	
+	<xsl:for-each select="element()">
+		<tr>
+			<td><xsl:value-of select="name(.)" exclude-result-prefixes="ca"/></td>
+			<td><xsl:value-of select="."/></td>
+		</tr>
+		</xsl:for-each>
+</table>
+
+
+
+
+<!--TTT
 <xsl:value-of select="ca:Inledd_enligt_beslut"/>
 <xsl:value-of select="."/>
+-->
 </xsl:for-each>
 
 </div>

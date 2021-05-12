@@ -36,7 +36,7 @@
 <xsl:variable name="filename"><xsl:value-of select="$pnr"/></xsl:variable>
 
 <!--Skapar variabel som genererar namnet på elevens xml-fil -->
-<xsl:variable name="xmlfil"><xsl:value-of select="$pnr"/><xsl:text> </xsl:text><xsl:value-of select="fn:lower-case(fn:translate($fornamn,' åäöÅÄÖéèáàüêë','-aaoaaoeeaauee'))"/><xsl:text>-</xsl:text><xsl:value-of select="fn:lower-case(fn:translate($efternamn,' åäöÅÄÖéèáàüêë','-aaoaaoeeaauee'))"/><xsl:text>, </xsl:text><xsl:value-of select="fn:lower-case(fn:translate($skola,' åäöÅÄÖ','-aaoaao'))"/>.xml</xsl:variable>
+<xsl:variable name="xmlfil"><xsl:value-of select="$pnr"/><xsl:text> </xsl:text><xsl:value-of select="fn:lower-case(fn:translate($fornamn,' åäöÅÄÖéèáàüêëñ','-aaoaaoeeaaueen'))"/><xsl:text>-</xsl:text><xsl:value-of select="fn:lower-case(fn:translate($efternamn,' åäöÅÄÖéèáàüêëñ','-aaoaaoeeaaueen'))"/><xsl:text>, </xsl:text><xsl:value-of select="fn:lower-case(fn:translate($skola,' åäöÅÄÖ','-aaoaao'))"/>.xml</xsl:variable>
 
 			
 <!-- Skapa en kopia av hela xml-filen och ger den ett filnamn baserat på personal_id -->
