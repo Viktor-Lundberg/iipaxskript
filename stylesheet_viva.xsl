@@ -7,6 +7,8 @@
 
 html{
 background-color: 879EAD;
+font-family: Verdana;
+font-size: small;
 }
 
 h1 {
@@ -52,6 +54,8 @@ background-color: white;
 
 table {
 	border-spacing: 10px;
+	font-family: Verdana;
+font-size: small;
 } 
 
  
@@ -86,8 +90,31 @@ th {
 		background-color:#ececec;
 		} 
 	
-	.beslutslistatabell{
+	.beslutslistatabell {
 	background-color:D3D7DA;
+	border-collapse: collapse;
+	 word-wrap: break-word;
+	}
+	
+	.beslutslistatabell th {
+	background-color: 3B5F77;
+	color: white;
+	word-wrap: break-word;
+	border: 1px solid black;	
+	}
+	
+	.beslutslistatabell td {
+		border: 1px solid black;
+		font-size: x-small;
+		word-wrap: break-word;
+
+		}
+		
+	.createinfo { 
+	font-size: x-small;
+	background-color: #ececec;
+	text-align: right;
+	
 	}
   
   </style>
@@ -181,6 +208,7 @@ th {
 						</tr>
 					</table>
 				</div>
+				
 				<!--Anteckningar-->
 				<xsl:if test="ra:TillkommandeXMLdata/ca:ArendeInfo/ca:Handlingar/ca:Anteckningar">
 					<div id="anteckningar" class="tabcontent">
@@ -189,12 +217,6 @@ th {
 							<div class="insidediv">
 								<h3>Anteckning <xsl:value-of select="ca:Skapad"/>
 								</h3>
-								<p>Skapad: <xsl:value-of select="ca:Skapad"/>
-								</p>
-								<p>Skapad av: <xsl:value-of select="ca:Skapad_av/ca:VisningsNamn"/>
-									<xsl:text>, </xsl:text>
-									<xsl:value-of select="ca:Skapad_av/ca:Titel"/>
-								</p>
 								<table>
 									<tr>
 										<td>Händelsedatum</td>
@@ -219,12 +241,18 @@ th {
 										</tr>
 									</xsl:for-each>
 								</table>
+
+								<hr class="row"></hr>
+								<p class="createinfo">Dokumentet skapades <xsl:value-of select="ca:Skapad"/>
+								 av<xsl:text> </xsl:text><xsl:value-of select="ca:Skapad_av/ca:VisningsNamn"/><xsl:text>, </xsl:text><xsl:value-of select="ca:Skapad_av/ca:Titel"/></p>
+								
+								
 							</div>
 						</xsl:for-each>
 					</div>
 				</xsl:if>
 				
-				<!--Ansökningar KOLLA MED ROGER OM CHECKLISTOR-->
+				<!--Ansökningar-->
 				<xsl:for-each select="ra:TillkommandeXMLdata/ca:ArendeInfo/ca:Handlingar/ca:Ansökningar">
 					<div id="ansokningar" class="tabcontent">
 						<h2>Ansökningar</h2>
@@ -287,7 +315,9 @@ th {
 							</xsl:if>
 							
 							
-							
+							<hr class="row"></hr>
+								<p class="createinfo">Dokumentet skapades <xsl:value-of select="ca:Skapad"/>
+								 av<xsl:text> </xsl:text><xsl:value-of select="ca:Skapad_av/ca:VisningsNamn"/><xsl:text>, </xsl:text><xsl:value-of select="ca:Skapad_av/ca:Titel"/></p>
 							</div>
 						</xsl:for-each>
 						<xsl:for-each select="ca:Fortsatt_ansökan">
@@ -355,8 +385,7 @@ th {
 								
 								
 								
-								</xsl:for-each>
-							
+							</xsl:for-each>
 						</xsl:if>
 						
 						<xsl:if test="ca:Komplettering">
@@ -393,14 +422,18 @@ th {
 							</tbody>
 						</table>
 						
+						
+						
 						</xsl:for-each>
 						
-						
 						</xsl:if>	
-							
+						<hr class="row"></hr>
+								<p class="createinfo">Dokumentet skapades <xsl:value-of select="ca:Skapad"/>
+								 av<xsl:text> </xsl:text><xsl:value-of select="ca:Skapad_av/ca:VisningsNamn"/><xsl:text>, </xsl:text><xsl:value-of select="ca:Skapad_av/ca:Titel"/></p>	
 						</div>
 						</xsl:for-each>
 						
+								
 					</div>
 				</xsl:for-each>
 				<!--Utredningar -->
@@ -461,10 +494,15 @@ th {
 										</tr>
 									</xsl:for-each>
 								</table>
+								<hr class="row"></hr>
+								<p class="createinfo">Dokumentet skapades <xsl:value-of select="ca:Skapad"/>
+								 av<xsl:text> </xsl:text><xsl:value-of select="ca:Skapad_av/ca:VisningsNamn"/><xsl:text>, </xsl:text><xsl:value-of select="ca:Skapad_av/ca:Titel"/></p>
 							</div>
 						</xsl:for-each>
+						
 					</div>
 				</xsl:for-each>
+				
 				<!--INSATSER -->
 				<xsl:for-each select="ra:TillkommandeXMLdata/ca:ArendeInfo/ca:Handlingar/ca:Insatser">
 					<div id="insatser" class="tabcontent">
@@ -662,7 +700,10 @@ th {
 										<td><xsl:value-of select="ca:Verkställd_av/ca:VisningsNamn"/>, <xsl:value-of select="ca:Verkställd_av/ca:Titel"/></td>
 									</tr>
 								</table>
-								</xsl:for-each>	
+								</xsl:for-each>
+								<hr class="row"></hr>
+								<p class="createinfo">Dokumentet skapades <xsl:value-of select="ca:Skapad"/>
+								 av<xsl:text> </xsl:text><xsl:value-of select="ca:Skapad_av/ca:VisningsNamn"/><xsl:text>, </xsl:text><xsl:value-of select="ca:Skapad_av/ca:Titel"/></p>	
 							</div>
 						</xsl:for-each>
 					</div>
@@ -690,18 +731,13 @@ th {
 												<td>
 													<xsl:value-of select="ca:Typ"/>
 												</td>
-												<th>ID</th>
-												<td>
-													<xsl:value-of select="ca:ID"/>
-												</td>
 											</tr>
 										</xsl:for-each>
 									</xsl:if>
 								</table>
-								<p>Skapad: <xsl:value-of select="ca:Skapad"/> Skapad av: <xsl:value-of select="ca:Skapad_av/ca:VisningsNamn"/>, <xsl:value-of select="ca:Skapad_av/ca:Titel"/>
-								</p>
-								<p>Signerad: <xsl:value-of select="ca:Signerad"/> Signerad av: <xsl:value-of select="ca:Signerad_Av/ca:VisningsNamn"/>, <xsl:value-of select="ca:Signerad_Av/ca:Titel"/>
-								</p>
+								<hr class="row"></hr>
+								<p class="createinfo">Dokumentet skapades <xsl:value-of select="ca:Skapad"/>
+								 av<xsl:text> </xsl:text><xsl:value-of select="ca:Skapad_av/ca:VisningsNamn"/><xsl:text>, </xsl:text><xsl:value-of select="ca:Skapad_av/ca:Titel"/></p>
 							</div>
 						</xsl:for-each>
 					</div>
@@ -711,7 +747,7 @@ th {
 					<div id="beslutslista" class="tabcontent">
 						<div class="insidediv">
 						<h2>Beslutslista</h2>
-						<table>
+						<table class="beslutslistatabell">
 							<tbody>
 								<tr>
 									<th>Slag</th>
@@ -724,7 +760,7 @@ th {
 									<th>Avser</th>
 								</tr>
 								<xsl:for-each select="ca:Beslut">
-									<tr class="beslutslistatabell">
+									<tr>
 										<td>
 											<xsl:value-of select="ca:Slag"/>
 										</td>
@@ -931,6 +967,9 @@ th {
 									</tr>
 								</tbody>
 							</table>
+							<hr class="row"></hr>
+								<p class="createinfo">Dokumentet skapades <xsl:value-of select="ca:Skapad"/>
+								 av<xsl:text> </xsl:text><xsl:value-of select="ca:Skapad_av/ca:VisningsNamn"/><xsl:text>, </xsl:text><xsl:value-of select="ca:Skapad_av/ca:Titel"/></p>
 						</div>
 						</xsl:for-each>
 					</div>
@@ -986,7 +1025,9 @@ th {
 									</tr>
 								</tbody>
 							</table>	
-							
+							<hr class="row"></hr>
+								<p class="createinfo">Dokumentet skapades <xsl:value-of select="ca:Skapad"/>
+								 av<xsl:text> </xsl:text><xsl:value-of select="ca:Skapad_av/ca:VisningsNamn"/><xsl:text>, </xsl:text><xsl:value-of select="ca:Skapad_av/ca:Titel"/></p>
 						</div>
 						</xsl:for-each>
 					</div>
