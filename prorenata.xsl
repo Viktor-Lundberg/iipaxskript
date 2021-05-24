@@ -1014,6 +1014,13 @@
 							<!-- Sekretess -->
 							<Attribute name="secrecy"><Value>10</Value>
 							</Attribute>
+							
+							
+							<!-- Sekretessmarkering -->
+							<Attribute name="sekretess_lagrum">
+							<Value>OBS! Kan finnas instrumentsekretess enligt OSL 17:4 bland psykologhandlingarna. Materialet får inte lämnas ut till andra än behöriga testanvändare.</Value>
+						
+							</Attribute>
 
 							<!-- PUL -->
 							<Attribute name="pul_personal_secrecy"><Value>20</Value>
