@@ -900,7 +900,7 @@ th {
 										<th>Belopp</th>
 										<th>Anteckningar</th>
 									</tr>
-									<xsl:for-each select="ca:Reducering/ca:Post">
+									<xsl:for-each select="ca:Reduceringar/ca:Post">
 									<tr>
 										<td><xsl:value-of select="ca:Reducering"/></td>
 										<td><xsl:value-of select="ca:Dagar"/></td>
@@ -910,7 +910,7 @@ th {
 									</xsl:for-each>
 									<tr>
 										<th>Summa</th>
-										<td><xsl:value-of select="ca:Reducering/ca:Summa"/></td>	
+										<td><xsl:value-of select="ca:Reduceringar/ca:Summa"/></td>	
 									</tr>
 								</tbody>
 							</table>
