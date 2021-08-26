@@ -14,7 +14,7 @@
 				<xsl:copy-of select="."/>
 			</ii:output>
 			<ii:output ii:indent="2" ii:fileName="{$nr}/Archive.xml">
-				<ArchiveSip system="VIVA" producer="Soc" xmlns:ns2="http://www.idainfront.se/schema/archive-2.0-custom" xmlns="http://www.idainfront.se/schema/archive-2.2">
+				<ArchiveSip system="Viva" producer="Borås socialtjänst" xmlns:ns2="http://www.idainfront.se/schema/archive-2.0-custom" xmlns="http://www.idainfront.se/schema/archive-2.2">
 					<ArchiveObject>
 						
 						<!-- DISPLAYNAME -->
@@ -123,9 +123,20 @@
 						
 						<!-- Förvaringsplats -->
 						<Attribute name="forvaringsplats">
-							<Value>
-								<xsl:text>SAKNAS I NUVARANDE EXPORT!</xsl:text>
-							</Value>
+							<xsl:choose>
+								<xsl:when test="ra:TillkommandeXMLdata/ca:ArendeInfo/ca:Pappersakt">
+									<Value>
+										<xsl:text>Analog/digital</xsl:text>
+									</Value>
+								</xsl:when>
+								
+								<xsl:otherwise>
+								<Value>
+										<xsl:text>Digital</xsl:text>
+								</Value>
+								
+								</xsl:otherwise>
+							</xsl:choose>
 						</Attribute>
 
 						<!-- Sekretess -->
@@ -148,7 +159,7 @@
 								<!-- Displayname + numrering för att undvika problem med liknande filnamn -->
 								<DisplayName>
 									<xsl:number value="position()" format="1"/>
-									<xsl:text>.</xsl:text>
+									<xsl:text>. </xsl:text>
 									<xsl:value-of select="ca:Namn"/>
 								</DisplayName>
 								<ObjectType>viva_handling</ObjectType>
@@ -219,7 +230,7 @@
 							<ObjectType>xml_document</ObjectType>
 							<!-- Sekretess -->
 							<Attribute name="secrecy">
-								<Value>10</Value>
+								<Value>20</Value>
 							</Attribute>
 							<!-- Personuppgiftsklassning -->
 							<Attribute name="pul_personal_secrecy">
