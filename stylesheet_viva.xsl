@@ -130,6 +130,9 @@ th {
 					<xsl:if test="ra:TillkommandeXMLdata/ca:ArendeInfo/ca:Handlingar/ca:Ansökningar">
 						<button class="tablinks" onclick="location.href='#ansokningar'">Ansökningar</button>
 					</xsl:if>
+					<xsl:if test="ra:TillkommandeXMLdata/ca:ArendeInfo/ca:Handlingar/ca:Anmälningar">
+						<button class="tablinks" onclick="location.href='#anmalningar'">Anmälningar</button>
+					</xsl:if>
 					<xsl:if test="ra:TillkommandeXMLdata/ca:ArendeInfo/ca:Handlingar/ca:Utredningar">
 						<button class="tablinks" onclick="location.href='#utredningar'">Utredningar</button>
 					</xsl:if>
@@ -436,6 +439,62 @@ th {
 								
 					</div>
 				</xsl:for-each>
+				
+				<!-- Anmälningar -->
+				<xsl:for-each select="ra:TillkommandeXMLdata/ca:ArendeInfo/ca:Handlingar/ca:Anmälningar">
+					<div id="anmalningar" class="tabcontent">
+						<h2>Anmälningar</h2>
+						<xsl:for-each select="ca:Anmälan">
+						<div class="insidediv">
+							<h3>Anmälan</h3>
+							<table>
+								<tbody>
+									<tr>
+										<th>Anmälan ID</th>
+										<td><xsl:value-of select="ca:AnmälanID"/></td>
+									</tr>
+									<tr>
+										<th>Mottagare</th>
+										<td><xsl:value-of select="ca:Mottagare/ca:VisningsNamn"/>,<xsl:value-of select="ca:Mottagare/ca:Titel"/></td>
+									</tr>
+									<tr>
+										<th>Kort beskrivning av anmälan</th>
+										<td><xsl:value-of select="ca:Kort_beskrivning"/></td>
+									</tr>
+									<xsl:for-each select="ca:Beskrivning">
+									<tr>
+										<th><xsl:value-of select="ca:Rubrik"/></th>
+										<td><xsl:value-of select="ca:Text"/></td>
+									</tr>
+									</xsl:for-each>
+									
+									<tr>
+										<th>Bilagor</th><td>
+										<xsl:for-each select="ca:Bilagor/ca:Bilaga">
+										<xsl:value-of select="ca:Filnamn"/><xsl:text>, </xsl:text>
+										</xsl:for-each>
+										</td>
+
+									</tr>
+									
+									
+								</tbody>
+							</table>
+								
+							
+							
+							
+							<hr class="row"></hr>
+								<p class="createinfo">Dokumentet skapades <xsl:value-of select="ca:Skapad"/>
+								 av<xsl:text> </xsl:text><xsl:value-of select="ca:Skapad_av/ca:VisningsNamn"/><xsl:text>, </xsl:text><xsl:value-of select="ca:Skapad_av/ca:Titel"/></p>
+							</div>
+						</xsl:for-each>
+						</div>
+				</xsl:for-each>
+				
+					
+				
+				
 				<!--Utredningar -->
 				<xsl:for-each select="ra:TillkommandeXMLdata/ca:ArendeInfo/ca:Handlingar/ca:Utredningar">
 					<div id="utredningar" class="tabcontent">

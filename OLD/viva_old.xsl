@@ -154,67 +154,47 @@
 							<Value>20</Value>
 						</Attribute>
 						
-						<xsl:for-each select=".//ca:Bilaga">
-						
-						<Document>	
-						<xsl:choose>
-						
-						<!-- Kontrollerar om det är en bilaga-handlingstyp --> 
-							<xsl:when test="ca:Skapad">
-							<DisplayName>
-									<xsl:number value="position()" format="1"/>
-									<xsl:text>. </xsl:text><xsl:value-of select="ca:Skapad"/>
-									<xsl:text> </xsl:text>
-									<xsl:value-of select="ca:Filnamn"/>
-								</DisplayName>
-							</xsl:when>
-						
-						<!-- Plockar fram datum för alla handlingstyper som inte är bilaga! -->
-							<xsl:otherwise>
+						<xsl:for-each select="ra:TillkommandeXMLdata/ca:ArendeInfo/ca:Handlingar/ca:Bilagor/ca:Bilaga">
+							<Document>
+								<!-- Displayname + numrering för att undvika problem med liknande filnamn -->
 								<DisplayName>
 									<xsl:number value="position()" format="1"/>
-									<xsl:text>. </xsl:text><xsl:value-of select="ancestor::ca:Bilagor/preceding-sibling::ca:Skapad"/>
-									<xsl:text> </xsl:text>
-									<xsl:value-of select="ca:Filnamn"/>
+									<xsl:text>. </xsl:text>
+									<xsl:value-of select="ca:Namn"/>
 								</DisplayName>
-								
-							</xsl:otherwise>
-							
-						</xsl:choose>	
-							
-								
 								<ObjectType>viva_handling</ObjectType>
-						
-						
-						<Attribute name="registrerat_datum">
+								
+								<!-- Registreringsdatum -->
+								<Attribute name="registrerat_datum">
 									<Value>
 										<xsl:value-of select="ca:Skapad"/>
 									</Value>
 								</Attribute>
 
-							
+								<!-- Registrerat av-->
 								<Attribute name="registrerat_av">
 									<Value>
 										<xsl:value-of select="ca:Skapad_av/ca:VisningsNamn"/>
 									</Value>
 								</Attribute>
 								
-							
+								<!-- Handlingstyp-->
 								<Attribute name="handling_typ">
 									<Value>
 										<xsl:value-of select="ca:Referenser/ca:Referens/ca:Typ"/>
 									</Value>
 								</Attribute>
 								
-								
+
+								<!-- Sekretess -->
 								<Attribute name="secrecy">
 									<Value>20</Value>
 								</Attribute>
-								
+								<!-- Personuppgiftsklassning -->
 								<Attribute name="pul_personal_secrecy">
 									<Value>20</Value>
 								</Attribute>
-								
+								<!-- Övrigt skydd -->
 								<Attribute name="other_secrecy">
 									<Value>20</Value>
 								</Attribute>
@@ -230,24 +210,21 @@
 											<xsl:value-of select="$documentLocation"/>/<xsl:value-of select="fn:encode-for-uri($removews)"/>
 										</URI>
 									</Content>
-									
+									<!-- Sekretess -->
 									<Attribute name="secrecy">
 										<Value>20</Value>
 									</Attribute>
-									
+									<!-- Personuppgiftsklassning -->
 									<Attribute name="pul_personal_secrecy">
 										<Value>20</Value>
 									</Attribute>
-									
+									<!-- Övrigt skydd -->
 									<Attribute name="other_secrecy">
 										<Value>20</Value>
 									</Attribute>
 								</File>
 							</Document>
-						
 						</xsl:for-each>
-
-					
 						<Document>
 							<DisplayName>original.xml</DisplayName>
 							<ObjectType>xml_document</ObjectType>
