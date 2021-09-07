@@ -156,15 +156,20 @@
 						
 						<xsl:for-each select=".//ca:Bilaga">
 						
-						<Document>	
+							<!-- Gör datumbaserad sortering utifrån skapat-datum beroende på vilken handlingstyp --> 
+						<xsl:sort select="ancestor::ca:Bilagor/preceding-sibling::ca:Skapad|ca:Skapad"/>	
+						<Document>
+						
 						<xsl:choose>
 						
 						<!-- Kontrollerar om det är en bilaga-handlingstyp --> 
 							<xsl:when test="ca:Skapad">
+							
+								
 							<DisplayName>
 									<xsl:number value="position()" format="1"/>
 									<xsl:text>. </xsl:text><xsl:value-of select="ca:Skapad"/>
-									<xsl:text> </xsl:text>
+									<xsl:text>. </xsl:text>
 									<xsl:value-of select="ca:Filnamn"/>
 								</DisplayName>
 							</xsl:when>
@@ -174,7 +179,7 @@
 								<DisplayName>
 									<xsl:number value="position()" format="1"/>
 									<xsl:text>. </xsl:text><xsl:value-of select="ancestor::ca:Bilagor/preceding-sibling::ca:Skapad"/>
-									<xsl:text> </xsl:text>
+									<xsl:text>. </xsl:text>
 									<xsl:value-of select="ca:Filnamn"/>
 								</DisplayName>
 								
