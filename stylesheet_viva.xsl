@@ -774,15 +774,20 @@ th {
 						<h3>Bilagor</h3>
 						<xsl:for-each select="ca:Bilaga">
 							<div class="insidediv">
-								<h4>Bilaga <xsl:number value="position()" format="1"/>. <xsl:value-of select="ca:Namn"/>
-								</h4>
+								<h4>Bilaga - <xsl:value-of select="ca:Namn"/></h4>
+								
 								<table>
+								<tr>
+										<th>Skapad</th>
+										<td><xsl:value-of select="ca:Skapad"/></td>
+									</tr>
 									<tr>
 										<th>Filnamn</th>
 										<td>
 											<xsl:value-of select="ca:Filnamn"/>
 										</td>
 									</tr>
+									
 									<xsl:if test="ca:Referenser">
 										<xsl:for-each select="ca:Referenser/ca:Referens">
 											<tr>
