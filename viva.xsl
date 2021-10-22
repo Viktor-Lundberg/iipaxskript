@@ -165,23 +165,62 @@
 						<!-- Kontrollerar om det är en bilaga-handlingstyp --> 
 							<xsl:when test="ca:Skapad">
 							
+							<xsl:choose>
+							
+							<!-- Kollar om bilage-handlingstypen har metadata i namn-elementet-->
+								<xsl:when test="ca:Namn != ''">
+								<DisplayName>
+									<xsl:number value="position()" format="1"/>
+									<xsl:text>. </xsl:text><xsl:value-of select="ca:Skapad"/>
+									<xsl:text>. </xsl:text>
+									<xsl:value-of select="ca:Namn"/>
+								</DisplayName>
 								
+								</xsl:when>
+							
+							<!-- Annars används filnamn som display_name -->
+							<xsl:otherwise>
 							<DisplayName>
 									<xsl:number value="position()" format="1"/>
 									<xsl:text>. </xsl:text><xsl:value-of select="ca:Skapad"/>
 									<xsl:text>. </xsl:text>
 									<xsl:value-of select="ca:Filnamn"/>
 								</DisplayName>
+							
+							
+							</xsl:otherwise>
+							</xsl:choose>
+								
+							
 							</xsl:when>
 						
 						<!-- Plockar fram datum för alla handlingstyper som inte är bilaga! -->
 							<xsl:otherwise>
+							<xsl:choose>
+								
+								<!-- Kontrollerar om Namn-elementet innehåller information -->
+								<xsl:when test="ca:Namn != ''">
+								<DisplayName>
+									<xsl:number value="position()" format="1"/>
+									<xsl:text>. </xsl:text><xsl:value-of select="ancestor::ca:Bilagor/preceding-sibling::ca:Skapad"/>
+									<xsl:text>. </xsl:text>
+									<xsl:value-of select="ca:Namn"/>
+								</DisplayName>
+								
+								</xsl:when>
+								
+								<!-- Använder filnamn i annat fall som display_name-->
+								<xsl:otherwise>
 								<DisplayName>
 									<xsl:number value="position()" format="1"/>
 									<xsl:text>. </xsl:text><xsl:value-of select="ancestor::ca:Bilagor/preceding-sibling::ca:Skapad"/>
 									<xsl:text>. </xsl:text>
 									<xsl:value-of select="ca:Filnamn"/>
 								</DisplayName>
+							
+								</xsl:otherwise>
+							</xsl:choose>
+								
 								
 							</xsl:otherwise>
 							
