@@ -43,7 +43,7 @@
 					
 					<!-- SAKNAS!!! -->
 					<Attribute name="avslutat_datum">
-						<Value></Value>
+						<Value><xsl:value-of select="fgs:Avslutat"/></Value>
 					</Attribute>
 					
 					<Attribute name="beskrivning">
@@ -82,6 +82,12 @@
 					<xsl:if test="fgs:Notering">
 						<Attribute name="anteckningar">
 							<Value><xsl:value-of select="fgs:Notering"/></Value>
+						</Attribute>
+					</xsl:if>
+					
+					<xsl:if test="fgs:Beslutat">
+						<Attribute name="beslutsdatum">
+							<Value><xsl:value-of select="fgs:Beslutat"/></Value>
 						</Attribute>
 					</xsl:if>
 					
@@ -140,13 +146,30 @@
 			</Attribute>
 		</xsl:if>
 		
+		<xsl:if test="fgs:Beskrivning">
+			<Attribute name="anteckningar">
+				<Value><xsl:value-of select="fgs:Beskrivning"/></Value>
+			</Attribute>
+		</xsl:if>
+		
 		<Attribute name="riktning">
 			<Value><xsl:value-of select="fgs:StatusHandling"/></Value>
 		</Attribute>
 				
 		<Attribute name="secrecy">
-			<Value>0</Value>
+			<Value>
+				<xsl:choose>
+					<xsl:when test="fgs:Restriktion/attribute(Typ)='Sekretess'">10</xsl:when>
+					<xsl:otherwise>0</xsl:otherwise>
+				</xsl:choose>
+			</Value>
 		</Attribute>
+		
+		<xsl:if test="fgs:Restriktion/fgs:Lagrum !=''">
+			<Attribute name="sekretess_lagrum">
+				<Value><xsl:value-of select="fgs:Restriktion/fgs:Lagrum"/></Value>
+			</Attribute>
+		</xsl:if>
 
 		<Attribute name="pul_personal_secrecy">
 			<Value>0</Value>

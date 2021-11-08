@@ -217,6 +217,7 @@ th {
 					<div id="anteckningar" class="tabcontent">
 						<h2>Anteckningar</h2>
 						<xsl:for-each select="ra:TillkommandeXMLdata/ca:ArendeInfo/ca:Handlingar/ca:Anteckningar/ca:Anteckning">
+						<xsl:sort select="ca:Skapad" order="descending"/>
 							<div class="insidediv">
 								<h3>Anteckning <xsl:value-of select="ca:Skapad"/>
 								</h3>
@@ -260,6 +261,7 @@ th {
 					<div id="ansokningar" class="tabcontent">
 						<h2>Ansökningar</h2>
 						<xsl:for-each select="ca:Ansökan">
+						<xsl:sort select="ca:Ansökningshandlingar/ca:Handling_inkom" order="descending"/>
 						<div class="insidediv">
 							<h3>Ansökan</h3>
 							<h4 class="midrubrik">Ansökningshandlingar</h4>
@@ -445,6 +447,7 @@ th {
 					<div id="anmalningar" class="tabcontent">
 						<h2>Anmälningar</h2>
 						<xsl:for-each select="ca:Anmälan">
+						
 						<div class="insidediv">
 							<h3>Anmälan</h3>
 							<table>
@@ -500,6 +503,7 @@ th {
 					<div id="utredningar" class="tabcontent">
 						<h2>Utredningar</h2>
 						<xsl:for-each select="ca:Utredning_2">
+						<xsl:sort select="ca:Inledd" order="descending"/>
 							<div class="insidediv">
 								<h3>Utredning</h3>
 								<table>
@@ -567,6 +571,7 @@ th {
 					<div id="insatser" class="tabcontent">
 						<h2>Insatser</h2>
 						<xsl:for-each select="ca:Insats">
+						<xsl:sort select="ca:Skapad" order="descending"/>
 							<div class="insidediv">
 								<h3>Insats</h3>
 								<h4>Allmän information</h4>
@@ -773,6 +778,7 @@ th {
 					<div id='bilagor' class="tabcontent">
 						<h3>Bilagor</h3>
 						<xsl:for-each select="ca:Bilaga">
+						<xsl:sort select="ca:Skapad" order="descending"/>
 							<div class="insidediv">
 								<h4>Bilaga - <xsl:value-of select="ca:Namn"/></h4>
 								
@@ -824,6 +830,7 @@ th {
 									<th>Avser</th>
 								</tr>
 								<xsl:for-each select="ca:Beslut">
+								<xsl:sort select="ca:Beslutsinformation/ca:Beslutsdatum" order="descending"/>
 									<tr>
 										<td>
 											<xsl:value-of select="ca:Slag"/>
@@ -865,6 +872,7 @@ th {
 						<h2>Beräkningar</h2>
 						
 						<xsl:for-each select="ca:Beräkning">
+						<xsl:sort select="ca:Beräkningsdatum" order="descending"/>
 						<div class="insidediv">
 							<h3>Beräkning</h3>
 							<table>
@@ -1049,6 +1057,7 @@ th {
 					<div id="ekonomi" class="tabcontent">
 						<h2>Ekonomi</h2>
 						<xsl:for-each select="ca:Utbetalning">
+						<xsl:sort select="ca:Skapad" order="descending"/>
 						<div class="insidediv">
 							<h3>Utbetalning</h3>
 							<table>
