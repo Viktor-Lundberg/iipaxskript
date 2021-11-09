@@ -41,7 +41,6 @@
 						<Value><xsl:value-of select="fn:normalize-space(fgs:ArendeTyp)"/></Value>
 					</Attribute>
 					
-					<!-- SAKNAS!!! -->
 					<Attribute name="avslutat_datum">
 						<Value><xsl:value-of select="fgs:Avslutat"/></Value>
 					</Attribute>
@@ -102,6 +101,15 @@
 					<Attribute name="adress">
 						<Value><xsl:value-of select="fgs:EgnaElement/fgs:EgetElement[@Namn='Belagenhetsadress']/fgs:Varde"/></Value>
 					</Attribute>
+					
+					<Attribute name="beslutsinstans">
+						<Value><xsl:value-of select="fgs:EgnaElement/fgs:EgetElement[@Namn='BeslutsInstans']/fgs:Varde"/></Value>
+					</Attribute>
+					
+					<Attribute name="beslutsnummer">
+						<Value><xsl:value-of select="fgs:EgnaElement/fgs:EgetElement[@Namn='BeslutNr']/fgs:Varde"/></Value>
+					</Attribute>
+					
 					
 					<Attribute name="secrecy">
 						<Value>0</Value>
