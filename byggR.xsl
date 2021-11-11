@@ -37,10 +37,10 @@
 						<Value><xsl:value-of select="fgs:ExtraID"/></Value>
 					</Attribute>
 					
-					<Attribute name="arende_typ">
+					<Attribute name="arendetyp">
 						<Value><xsl:value-of select="fn:normalize-space(fgs:ArendeTyp)"/></Value>
 					</Attribute>
-					
+				
 					<Attribute name="avslutat_datum">
 						<Value><xsl:value-of select="fgs:Avslutat"/></Value>
 					</Attribute>
@@ -49,12 +49,12 @@
 						<Value><xsl:value-of select="fn:normalize-space(fgs:Beskrivning)"/></Value>
 					</Attribute>
 					
-					<Attribute name="skapad_datum">
+					<Attribute name="registrerat_datum">
 						<Value><xsl:value-of select="fgs:Skapad"/></Value>
 					</Attribute>					
 					
 					<xsl:if test="fgs:Inkommen !=''">
-					<Attribute name="inkom">
+					<Attribute name="inkom_datum">
 						<Value><xsl:value-of select="fgs:Inkommen"/></Value>
 					</Attribute>
 					</xsl:if>
@@ -143,7 +143,7 @@
 		</Attribute>
 		
 		<xsl:if test="fgs:Inkommen">
-			<Attribute name="inkom">
+			<Attribute name="inkom_datum">
 				<Value><xsl:value-of select="fgs:Inkommen"/></Value>
 			</Attribute>
 		</xsl:if>
