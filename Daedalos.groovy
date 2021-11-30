@@ -86,7 +86,7 @@ if (args != null && args.size() != 0) {
     // Where to store the output of the script
     mTargetDirName = "C:\\temp\\fgs-test"
     // Where to find the .zip to process
-    mInputStream = new BufferedInputStream(new FileInputStream("C:\\temp\\2018-000883.zip"))
+    mInputStream = new BufferedInputStream(new FileInputStream("C:\\temp\\2019-000829.zip"))
 
     mDebug = true
     mIsCli = true
@@ -122,6 +122,8 @@ if (mDebug) {println "Starting FGS transformation"}
 
 @Field SimpleDateFormat sSdfFrom = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
 
+@Field SimpleDateFormat yyyymmdd = new SimpleDateFormat("yyyy-MM-dd");
+
 @Field SimpleDateFormat sSdfFromWithMillis =
         new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.S");
 
@@ -148,6 +150,8 @@ this.binding.variables.each {
 
 // Read input parameters
 def Path targetPath = Paths.get(mTargetDirName);
+
+println mInputStream
 
 // Un-zip and also find the files sip.xml and metadata file
 FileUtil.unzip(mInputStream, targetPath, true);
@@ -357,8 +361,9 @@ public void createMassingestPackage() throws IngestException
 
         // Display name
         String diarienummer = XMLUtil.getXPathNodeValue(caseElem, "Diarienummer");
-        String arendemening = XMLUtil.getXPathNodeValue(caseElem, "Arendemening")
-        String displayName = "${diarienummer}, ${arendemening}"
+        String arendemening = XMLUtil.getXPathNodeValue(caseElem, "Arendemening").trim()
+        //String displayName = "${diarienummer}, ${arendemening}"
+        String displayName = "${diarienummer}"
         archiveXml.setDisplayName(displayName);
 
         if (mDebug) {println "-- Ärendet ${displayName}"}
@@ -370,7 +375,7 @@ public void createMassingestPackage() throws IngestException
         attribute = createAttribute(caseElem, "diarieplanbeteckning", "Klass")
         archiveXml.appendAttribute(attribute);
 
-        attribute = createAttribute(caseElem, "diarieplan_kod", "Arendekod")
+        attribute = createAttribute(caseElem, "arendetyp_kod", "Arendekod")
         archiveXml.appendAttribute(attribute);
 
         attribute = new Attribute("arendemening", arendemening)
@@ -379,10 +384,16 @@ public void createMassingestPackage() throws IngestException
         attribute = createAttribute(caseElem, "arendetyp", "Arendebenamning")
         archiveXml.appendAttribute(attribute);
 
+        attribute = createDateAttribute(caseElem, "registrerat_datum", "Registreringsdatum", [sSdfFromWithMillis, sSdfFrom, yyyymmdd])
+        archiveXml.appendAttribute(attribute);
+
         attribute = createAttribute(caseElem, "roll_handlaggare", "Ansvarig_handlaggare")
         archiveXml.appendAttribute(attribute);
 
         attribute = createAttribute(caseElem, "motpart", "Motpart")
+        archiveXml.appendAttribute(attribute);
+
+        attribute = createAttribute(caseElem, "motpart_diarienummer", "Extra_diarienummer_extern")
         archiveXml.appendAttribute(attribute);
 
         String secrecyValue = XMLUtil.getXPathNodeValue(caseElem, "Sekretess_OSL");
@@ -404,6 +415,33 @@ public void createMassingestPackage() throws IngestException
         }
         
         archiveXml.appendAttribute(new Attribute("other_secrecy", "20"));
+
+        //Går igenom Arnconnect för att hämta fastighetsbeteckningar, adresser och verksamheter
+        List<Node> fastigheter = XMLUtil.getXPathNodeList(caseElem, "Arnconnects/Arnconnect");
+        for (Node fastighet : fastigheter)
+        {
+            //Fastighetsbeteckning från FST-delen
+            if  (XMLUtil.getXPathNodeValue(fastighet, "Typ") == "FST")
+            {
+            varde = XMLUtil.getXPathNodeValue(fastighet, "Fastighet")
+            attribute = new Attribute("fastighetsbeteckning", varde);
+            archiveXml.appendAttribute(attribute, true);
+            }
+            
+            // Verksamhetsnamn och adress från VER-delen
+            if  (XMLUtil.getXPathNodeValue(fastighet, "Typ") == "VER")
+            {
+            varde = XMLUtil.getXPathNodeValue(fastighet, "Benamning")
+            attribute = new Attribute("objektsnamn", varde);
+            archiveXml.appendAttribute(attribute, true);
+            
+            varde = XMLUtil.getXPathNodeValue(fastighet, "Adress")
+            attribute = new Attribute("adress", varde);
+            archiveXml.appendAttribute(attribute, true);
+            
+            }
+
+        }
         
         /* DATUM??
         attribute = createDateAttribute(caseElem, "arendestart_datum", "Skapad", [sSdfFromWithMillis, sSdfFrom])
@@ -457,8 +495,9 @@ public void createMassingestPackage() throws IngestException
 
         // Display name
         String lopnummer = XMLUtil.getXPathNodeValue(documentElem, "Lopnummer");
-        String beskrivning = XMLUtil.getXPathNodeValue(documentElem, "Beskrivning");
-        archiveXml.setDisplayName("${lopnummer}. ${beskrivning}");
+        String beskrivning = XMLUtil.getXPathNodeValue(documentElem, "Beskrivning").trim();
+        String doklopnummer = XMLUtil.getXPathNodeValue(documentElem, "Doklopnummer");
+        archiveXml.setDisplayName("${lopnummer}.${doklopnummer}. ${beskrivning}");
 
         // new Attribute(internt iipax attribut, den text vi vill sätta)
         archiveXml.appendAttribute(new Attribute("beskrivning", beskrivning));
