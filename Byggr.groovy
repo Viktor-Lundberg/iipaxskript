@@ -570,6 +570,7 @@ public void createMassingestPackage() throws IngestException
 
         }
 
+        // OBS! Loopa igenom Instans + beslutsnummer 
         attribute = createAttribute(caseElem, "beslutsinstans", "EgnaElement/EgetElement[@Namn='BeslutInstans']/Varde")
         archiveXml.appendAttribute(attribute)
 

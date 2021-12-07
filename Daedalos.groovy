@@ -32,6 +32,7 @@ import javax.xml.XMLConstants;
 import javax.xml.namespace.NamespaceContext;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerException;
@@ -54,6 +55,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import org.w3c.dom.NamedNodeMap; //OBS! VID NAMESPACEÄNDRINGEN BEHÖVS DENNA IMPORT.
 
 import iipax.business.lta.api.exception.MetaDataError;
 import iipax.business.lta.sa.AIPConfigurationNotFoundException;
@@ -326,12 +328,13 @@ public void createMassingestPackage() throws IngestException
             {
                 String originalCaseXmlFileName = "original.xml";
                 String originalCaseXmlPath = docDir + "/" + originalCaseXmlFileName;
-                FgsUtil.createXMLFileFromElement(caseElem, originalCaseXmlPath);
+                //FgsUtil.createXMLFileFromElement(caseElem, originalCaseXmlPath);
+                createXMLFileFromElement(caseElem, originalCaseXmlPath);
                 archiveXml.createDocument();
                 archiveXml.setObjectType("xml_document");
                 archiveXml.setDisplayName("original");
 
-                Attribute styleSheetAttr = new Attribute("stylesheet", "generell visningsmall");
+                Attribute styleSheetAttr = new Attribute("stylesheet", "daedalos");
 
                 archiveXml.createFile(originalCaseXmlFileName, [styleSheetAttr]);
                 archiveXml.finishElement();
@@ -601,3 +604,37 @@ private Attribute createDateAttribute(Node node,
     Attribute attr = new Attribute(attributeType, nodeValue, allowEmptyValue);
     return attr;
 }
+
+// To get correct namespace in "original.xml"
+public static void createXMLFileFromElement(Element element, String absPath) throws TransformerException, IOException, ParserConfigurationException
+    {
+        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+        DocumentBuilder db = dbf.newDocumentBuilder();
+        Document doc = db.newDocument();
+
+        File xmlFile = new File(absPath);
+        if (!xmlFile.getParentFile().exists())
+        {
+            xmlFile.getParentFile().mkdirs();
+        }
+        xmlFile.createNewFile();
+
+        Element newRoot = doc.createElement(element.getNodeName());
+        NamedNodeMap attributes = element.getOwnerDocument().getDocumentElement().getAttributes();
+        for (int i = 0; i < attributes.getLength(); i++)
+        {
+            Node item = attributes.item(i);
+            newRoot.setAttribute(item.getNodeName(), item.getNodeValue());
+        }
+
+        doc.appendChild(newRoot);
+        NodeList rootchildren = element.getChildNodes();
+        for (int i = 0; i < rootchildren.getLength(); i++)
+        {
+            Node clone = rootchildren.item(i).cloneNode(true);
+            clone = doc.adoptNode(clone);
+            newRoot.appendChild(clone);
+        }
+
+        XMLUtil.transform(doc, xmlFile);
+    }
