@@ -3,7 +3,6 @@
 	<xsl:output indent="yes" media-type="text/xml" encoding="ISO-8859-1"/>
 	<xsl:param name="documentLocation"/>
 	
-		<!-- v.1.0 Uppdaterat med mappning mot rätt konfiguration.-->
 	
 	<xsl:template match="/">
 		<xsl:for-each select="/ra:Leveransobjekt/ra:ArkivobjektListaArenden/ra:ArkivobjektArende">
@@ -154,6 +153,7 @@
 							<Value>20</Value>
 						</Attribute>
 						
+						<!-- Går igenom bilagorna -->
 						<xsl:for-each select=".//ca:Bilaga">
 						
 							<!-- Gör datumbaserad sortering utifrån skapat-datum beroende på vilken handlingstyp --> 
@@ -167,13 +167,25 @@
 							
 							<xsl:choose>
 							
-							<!-- Kollar om bilage-handlingstypen har metadata i namn-elementet-->
-								<xsl:when test="ca:Namn != ''">
+							<!-- Kollar om det finns en beskrivning till bilagan och använder som display_name -->
+								
+								<xsl:when test="ca:Beskrivning != ''">
 								<DisplayName>
 									<xsl:number value="position()" format="1"/>
 									<xsl:text>. </xsl:text><xsl:value-of select="ca:Skapad"/>
 									<xsl:text>. </xsl:text>
-									<xsl:value-of select="ca:Namn"/>
+									<xsl:value-of select="fn:normalize-space(ca:Beskrivning)"/>
+								</DisplayName>
+								
+								
+								</xsl:when>
+								<!-- Om det inte finns något beskrivningselement eller om detta är tomt och ca:Namn inte är tomt används ca:Namn som display_name-->
+								<xsl:when test="(ca:Beskrivning ='' or not(ca:beskrivning)) and ca:Namn != ''">
+								<DisplayName>
+									<xsl:number value="position()" format="1"/>
+									<xsl:text>. </xsl:text><xsl:value-of select="ca:Skapad"/>
+									<xsl:text>. </xsl:text>
+									<xsl:value-of select="fn:normalize-space(ca:Namn)"/>
 								</DisplayName>
 								
 								</xsl:when>
@@ -184,7 +196,7 @@
 									<xsl:number value="position()" format="1"/>
 									<xsl:text>. </xsl:text><xsl:value-of select="ca:Skapad"/>
 									<xsl:text>. </xsl:text>
-									<xsl:value-of select="ca:Filnamn"/>
+									<xsl:value-of select="fn:normalize-space(ca:Filnamn)"/>
 								</DisplayName>
 							
 							
@@ -194,17 +206,27 @@
 							
 							</xsl:when>
 						
-						<!-- Plockar fram datum för alla handlingstyper som inte är bilaga! -->
+						<!-- Plockar fram datum för alla handlingstyper som inte är bilaga!-->
 							<xsl:otherwise>
 							<xsl:choose>
 								
-								<!-- Kontrollerar om Namn-elementet innehåller information -->
-								<xsl:when test="ca:Namn != ''">
+								<!-- Kollar om det finns en beskrivning till bilagan och använder som display_name -->
+								<xsl:when test="ca:Beskrivning != ''">
 								<DisplayName>
 									<xsl:number value="position()" format="1"/>
 									<xsl:text>. </xsl:text><xsl:value-of select="ancestor::ca:Bilagor/preceding-sibling::ca:Skapad"/>
 									<xsl:text>. </xsl:text>
-									<xsl:value-of select="ca:Namn"/>
+									<xsl:value-of select="fn:normalize-space(ca:Beskrivning)"/>
+								</DisplayName>
+								</xsl:when>	
+								
+								<!-- Om det inte finns något beskrivningselement eller om detta är tomt och ca:Namn inte är tomt används ca:Namn som display_name-->
+								<xsl:when test="(ca:Beskrivning ='' or not(ca:beskrivning)) and ca:Namn != ''">
+								<DisplayName>
+									<xsl:number value="position()" format="1"/>
+									<xsl:text>. </xsl:text><xsl:value-of select="ancestor::ca:Bilagor/preceding-sibling::ca:Skapad"/>
+									<xsl:text>. </xsl:text>
+									<xsl:value-of select="fn:normalize-space(ca:Namn)"/>
 								</DisplayName>
 								
 								</xsl:when>
