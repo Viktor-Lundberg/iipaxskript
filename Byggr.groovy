@@ -22,6 +22,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.Set;
 import java.util.Stack;
 import java.util.TreeSet;
@@ -69,6 +71,7 @@ import se.idainfront.egov.ingest.fgs.xml.ArchiveXml;
 import se.idainfront.egov.ingest.fgs.xml.Attribute;
 import se.idainfront.egov.ingest.fgs.xml.XMLUtil;
 
+
 @Field String mTargetDirName
 
 //@Field FileInputStream mInputStream
@@ -86,7 +89,7 @@ if (args != null && args.size() != 0) {
     // Where to store the output of the script
     mTargetDirName = "C:\\temp\\fgs-test"
     // Where to find the .zip to process
-    mInputStream = new BufferedInputStream(new FileInputStream("C:\\temp\\referens.zip"))
+    mInputStream = new BufferedInputStream(new FileInputStream("C:\\temp\\referens4.zip"))
     
 
     mDebug = true
@@ -570,6 +573,21 @@ public void createMassingestPackage() throws IngestException
 
         }
 
+        //REGEX för att leta adresser bland Winbär-materialet.
+        String testing = XMLUtil.getXPathNodeValue(caseElem, "Notering")
+        //Plattar ut strängen och tar bort \n
+        testing = testing.replace("\n", "").replace("\r", "");
+
+        Pattern regexpattern = Pattern.compile(".*Adress:\\s(.*),\\s(.*?)-.*");
+        Matcher m = regexpattern.matcher(testing)
+        //ANVÄND FIND!
+        if (m.find( )) {
+            varde = "${m.group(1)}, ${m.group(2)}"
+            attribute = new Attribute("adress", varde);
+            archiveXml.appendAttribute(attribute, true);
+        }
+        
+         
         // OBS! Loopa igenom Instans + beslutsnummer 
         attribute = createAttribute(caseElem, "beslutsinstans", "EgnaElement/EgetElement[@Namn='BeslutInstans']/Varde")
         archiveXml.appendAttribute(attribute)
@@ -581,11 +599,20 @@ public void createMassingestPackage() throws IngestException
         attribute = new Attribute("secrecy", "0")
         archiveXml.appendAttribute(attribute);
         
+        //Skyddar vissa ärendetyper från publicering på webben.
+        if (displayName.startsWith('ADM')||displayName.startsWith('BSAM')||displayName.startsWith('D')||displayName.startsWith('DIV')||displayName.startsWith('EXP')||displayName.startsWith('NONE')||displayName.startsWith('PERS')||displayName.startsWith('TKS')) {
+            attribute = new Attribute("other_secrecy", "20")
+        archiveXml.appendAttribute(attribute);
+        }
+        else {
+        attribute = new Attribute("other_secrecy", "0")
+        archiveXml.appendAttribute(attribute);
+        }
+
         attribute = new Attribute("pul_personal_secrecy", "0")
         archiveXml.appendAttribute(attribute);
 
-        attribute = new Attribute("other_secrecy", "0")
-        archiveXml.appendAttribute(attribute);
+        
 
 
         // If the case can contain files directly on the case, then loop through files here
@@ -651,11 +678,19 @@ public void createMassingestPackage() throws IngestException
         }
 
         archiveXml.appendAttribute(new Attribute("pul_personal_secrecy", "0"));
-        archiveXml.appendAttribute(new Attribute("other_secrecy", "0"));
+        
+        //Lista med handlingstyper som inte ska publiceras på webben enligt Samhällsbyggnad
+        def handlingstypslista = ["RIVNINGSANMÄLAN","RIVNINGSPLAN","SAMORDNINGSANSVARIG","SAMORDNINGSPLAN","Samrådshandlingar","Sanktionsavgift","SKRIVELSE","SKRIVELSE ADK","SKRIVELSE KF/KS","SKRIVELSE LSN","SKRIVELSE SBK","SKYDDSRUMBESKED","Skyddsrumsbesked","SKYDDSRUMSBESKED","SPRÄNGNINGSARBETE","STATISKA BERÄKNINGAR","STOMRITNING","Strandskydd","Svar externgranskning","TAKLAGSRITNING","Tekniskt snitt","Telia","Tjänsteskrivelse","Tomtplanering","TÄTHETSPROVN/VENT","Underlagshandl konstruktion","Underlagshandl plan","Underlagshandl rör","Underlagshandl ventilation","Underrättelse revidering","Underättelse samfälld mark","Uppdrag","UPPSTÄLLNINGSRITNING","UTDRAG ADRESSKARTAN","Utredningar/ Underlag","Utskick komplettering","UTSTAKNING","UVÄRDESBERÄKNING","VÄGVERKETS YTTRANDE","VÄRMEEFFEKTBEHOVSBERÄKNING","YRKESINSPEKT YTTR VENT","YRKESINSPEKTIONENS YTTR.","YTTR.BRANDFÖRSVARET","YTTR.FRÅN GRANNE (AR)","YTTR.FRÅN KLK MARK O EXP","YTTR.SPRÄNGÄMNESINSP.","Yttrande","YTTRANDE","Yttrande (Markavdelningen)","Yttrande (övriga)","Yttrande Borås Energi & Miljö","Yttrande från SBK","YTTRANDE MILJÖSKYDDSKONTORET","YTTRANDE SBK","Yttrande övrigt","Anmälan","Annan handling","Anslagen inbjudan","Anslagen underättelse","Anslaget protokollsutdrag SBN","Ansökan","Ansökan om planbesked","Arbetstagarintyg","Arrendeavtal","Atomhandling","Atomutskick","Begäran om komplettering","Begäran om komplettering  för slutbesked","Begäran om komplettering för starbesked","Bilaga remissvar","Checklista för kartuppdrag","Debiteringsunderlag","Delgivning","Delgivningskvitto","E-post","Etiketter","Fullmakt","Förfrågningsunderlag","Godkännande","Grannemedgivande","Inbjudan till samråd","Konsultavtal","Kontrakt","Laga kraftbevis","Meddelande","Minnesanteckningar","Planbesked","Planbeskrivning","Planbestämmelser","Plankarta","Plankostnadsavtal","Planprogram","Presentation","Programsamrådsredogörelse","Påminnelse begäran om komplettering","Remiss","Remissvar","Sammanställning","Samrådsredogörelse","Samrådsyttrande","Skrivelse","Skrivelse från fastighetsägare","Skrivelse från fastighetsägare/utförare","Skrivelse från granne","Skrivelse från kontrollansvarig","Skrivelse från sökande/byggherre","Skrivelse från utförare","Skrivelse till byggnadsnämnden","Skrivelse till fastighetsägare","Skrivelse till fastighetsägare/utförare","Skrivelse till handläggare","Skrivelse till sökande/byggherre","Skrivelse, ansökan om slutbesked","Skrivelse, ansökan om startbesked","Sändlista","Typen saknades vid konverteringen","Underrättelse","Underrättelse inför antagande","Underrättelse om granskning","Underättelse efter antagande","Uppdragsbeskrivning","Utredning","Yttrande","Yttrande (granne)","Åtgärdsplan","Ärendebekräftelse","Övrigt","Övrigt","ÖVRIGT","öö",];
 
-
-
-
+        //Kontroll om handlingen ska skyddas eller inte
+        if (handlingstypslista.contains(handlingstyp.trim()))
+        {
+            archiveXml.appendAttribute(new Attribute("other_secrecy", "10"));
+        }
+        else {
+            archiveXml.appendAttribute(new Attribute("other_secrecy", "0"));
+        }
+        
         // Loop through files
         List<Node> fileNodes = XMLUtil.getXPathNodeList(documentElem, "Bilaga");
         for (Node fileNode : fileNodes)
