@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet version="2.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:fn="http://www.w3.org/2005/xpath-functions" xmlns:ra="http://xml.ra.se/e-arkiv/FGS-ERMS" xmlns:ca="Cambio" exclude-result-prefixes="xs fn ra fo ca">
+<xsl:stylesheet version="3.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:fn="http://www.w3.org/2005/xpath-functions" xmlns:ra="http://xml.ra.se/e-arkiv/FGS-ERMS" xmlns:ca="Cambio" exclude-result-prefixes="xs fn ra fo ca">
 	<xsl:output indent="yes" media-type="xml" encoding="ISO-8859-1"/>
 	<xsl:template match="/">
 		<html>
@@ -830,7 +830,12 @@ th {
 									<th>Avser</th>
 								</tr>
 								<xsl:for-each select="ca:Beslut">
-								<xsl:sort select="ca:Beslutsinformation/ca:Beslutsdatum" order="descending"/>
+								
+								 
+								<xsl:sort select="ca:Skapad" order="descending"/>
+								<!-- Problem med att vissa beslut tydligen har två-beslutsdatum
+								<xsl:sort select="ca:Beslutsinformation/ca:Beslutsdatum" order="descending"/> -->
+								
 									<tr>
 										<td>
 											<xsl:value-of select="ca:Slag"/>
