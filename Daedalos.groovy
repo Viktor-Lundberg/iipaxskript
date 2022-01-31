@@ -88,7 +88,7 @@ if (args != null && args.size() != 0) {
     // Where to store the output of the script
     mTargetDirName = "C:\\temp\\fgs-test"
     // Where to find the .zip to process
-    mInputStream = new BufferedInputStream(new FileInputStream("C:\\temp\\2019-000829.zip"))
+    mInputStream = new BufferedInputStream(new FileInputStream("C:\\temp\\2019-000426.zip"))
 
     mDebug = true
     mIsCli = true
@@ -153,7 +153,7 @@ this.binding.variables.each {
 // Read input parameters
 def Path targetPath = Paths.get(mTargetDirName);
 
-println mInputStream
+if (mDebug) {println mInputStream}
 
 // Un-zip and also find the files sip.xml and metadata file
 FileUtil.unzip(mInputStream, targetPath, true);
@@ -334,7 +334,7 @@ public void createMassingestPackage() throws IngestException
                 archiveXml.setObjectType("xml_document");
                 archiveXml.setDisplayName("original");
 
-                Attribute styleSheetAttr = new Attribute("stylesheet", "daedalos");
+                Attribute styleSheetAttr = new Attribute("stylesheet", "Daedalos");
 
                 archiveXml.createFile(originalCaseXmlFileName, [styleSheetAttr]);
                 archiveXml.finishElement();
@@ -396,6 +396,9 @@ public void createMassingestPackage() throws IngestException
         attribute = createAttribute(caseElem, "motpart", "Motpart")
         archiveXml.appendAttribute(attribute);
 
+        attribute = createDateAttribute(caseElem, "avslutat_datum", "Avslutat_den", [yyyymmdd])
+        archiveXml.appendAttribute(attribute)
+
         attribute = createAttribute(caseElem, "motpart_diarienummer", "Extra_diarienummer_extern")
         archiveXml.appendAttribute(attribute);
 
@@ -423,12 +426,77 @@ public void createMassingestPackage() throws IngestException
         List<Node> fastigheter = XMLUtil.getXPathNodeList(caseElem, "Arnconnects/Arnconnect");
         for (Node fastighet : fastigheter)
         {
+            if  ((XMLUtil.getXPathNodeValue(fastighet, "Typ") != '') && (XMLUtil.getXPathNodeValue(fastighet, "Typ") != null))
+            {
+            varde = XMLUtil.getXPathNodeValue(fastighet, "Typ")
+            attribute = new Attribute("typ", varde);
+            archiveXml.appendAttribute(attribute, true);
+            }
+            
+            else {
+                attribute = new Attribute("typ", "-");
+            archiveXml.appendAttribute(attribute, true);
+            }
+            
+            if  ((XMLUtil.getXPathNodeValue(fastighet, "Benamning") != '') && (XMLUtil.getXPathNodeValue(fastighet, "Benamning") != null))
+            {
+            varde = XMLUtil.getXPathNodeValue(fastighet, "Benamning")
+            attribute = new Attribute("objektsnamn", varde);
+            archiveXml.appendAttribute(attribute, true);
+            }
+            
+            else {
+                attribute = new Attribute("objektsnamn", "-");
+            archiveXml.appendAttribute(attribute, true);
+            }
+
+            if  ((XMLUtil.getXPathNodeValue(fastighet, "Adress") != '') && (XMLUtil.getXPathNodeValue(fastighet, "Adress") != null))
+            {
+            varde = XMLUtil.getXPathNodeValue(fastighet, "Adress")
+            attribute = new Attribute("adress", varde);
+            archiveXml.appendAttribute(attribute, true);
+            }
+            
+            else {
+                attribute = new Attribute("adress", "-");
+            archiveXml.appendAttribute(attribute, true);
+            }
+            
+            if  ((XMLUtil.getXPathNodeValue(fastighet, "Fastighet") != '') && (XMLUtil.getXPathNodeValue(fastighet, "Fastighet") != null))
+            {
+            varde = XMLUtil.getXPathNodeValue(fastighet, "Fastighet")
+            attribute = new Attribute("fastighetsbeteckning", varde);
+            archiveXml.appendAttribute(attribute, true);
+            }
+            
+            else {
+                attribute = new Attribute("fastighetsbeteckning", "-");
+            archiveXml.appendAttribute(attribute, true);
+            }
+
+            if  ((XMLUtil.getXPathNodeValue(fastighet, "Kommun") != '') && (XMLUtil.getXPathNodeValue(fastighet, "Kommun") != null))
+            {
+            varde = XMLUtil.getXPathNodeValue(fastighet, "Kommun")
+            attribute = new Attribute("kommun", varde);
+            archiveXml.appendAttribute(attribute, true);
+            }
+
+             else {
+                attribute = new Attribute("kommun", "-");
+            archiveXml.appendAttribute(attribute, true);
+            }
+            /*
             //Fastighetsbeteckning från FST-delen
             if  (XMLUtil.getXPathNodeValue(fastighet, "Typ") == "FST")
             {
             varde = XMLUtil.getXPathNodeValue(fastighet, "Fastighet")
             attribute = new Attribute("fastighetsbeteckning", varde);
             archiveXml.appendAttribute(attribute, true);
+
+            varde = XMLUtil.getXPathNodeValue(fastighet, "Kommun")
+            attribute = new Attribute("kommun", varde);
+            archiveXml.appendAttribute(attribute, true);
+
             }
             
             // Verksamhetsnamn och adress från VER-delen
@@ -443,7 +511,7 @@ public void createMassingestPackage() throws IngestException
             archiveXml.appendAttribute(attribute, true);
             
             }
-
+            */
         }
         
         /* DATUM??
@@ -459,9 +527,8 @@ public void createMassingestPackage() throws IngestException
         if (testValue?.trim()[-1] == "P")
         {
             String msg = "Ärende ${displayName} ska inte arkiveras!"
-            println msg
 
-            // Vi slänger ett fel till vårat valideringskvitto
+            // Vi slänger ett fel till vårt valideringskvitto
             IngestException ie = new IngestException(msg);
             ie.setProducer(mProducerSystem.getProducer());
             ie.setSystem(mProducerSystem.getSystem());

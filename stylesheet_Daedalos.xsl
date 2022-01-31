@@ -188,7 +188,7 @@ html {
 		</tr>
 		<tr>
 			<td><xsl:value-of select="ARN:Motpart"/></td>
-			<td>KOLLA UPP!</td>
+			<td><xsl:value-of select="ARN:Extra_diarienummer_extern"/></td>
 		</tr>
 </table>
 
