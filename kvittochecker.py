@@ -88,7 +88,7 @@ for root, dirs, files in os.walk(cwd):
             
 # Printar ut resultatet
 printspace = '*'*25
-print(f'''RESULTAT\n{printspace}\nTotalt antal objekt som skulle arkiveras: {total_to_archive}\nLyckade arkiveringar: {successful_to_archive}
+print(f'''\nRESULTAT\n{printspace}\nTotalt antal objekt som skulle arkiveras: {total_to_archive}\nLyckade arkiveringar: {successful_to_archive}
 Totalt antal objekt till validering: {total_to_validation}\nLyckade valideringar: {successful_validations}\n{printspace}''')
 
 if len(errors) > 0:
